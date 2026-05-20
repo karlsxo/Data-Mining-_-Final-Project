@@ -582,6 +582,4 @@ st.markdown("""<div class="footer">
 <strong>Clinical Disclaimer:</strong>
 This dashboard is intended for clinical decision support only.
 Predictions should always be validated by qualified healthcare professionals.
-<br><br>
-CardioAI Clinical Suite • Premium Healthcare Analytics Platform
 </div>""", unsafe_allow_html=True)
