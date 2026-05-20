@@ -249,7 +249,6 @@ label {
     width: 220px;
     height: 220px;
     border-radius: 50%;
-    background: conic-gradient(#3B82F6 calc(var(--progress) * 1%), rgba(226,232,240,0.7) 0);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -264,6 +263,29 @@ label {
     height: 170px;
     border-radius: 50%;
     background: white;
+}
+
+.progress-ring svg {
+    width: 220px;
+    height: 220px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(-90deg);
+}
+
+.ring-bg {
+    fill: none;
+    stroke: rgba(226,232,240,0.9);
+    stroke-width: 14;
+}
+
+.ring-fg {
+    fill: none;
+    stroke: #3B82F6;
+    stroke-width: 14;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.6s ease;
 }
 
 .progress-inner {
@@ -415,6 +437,9 @@ with left:
 # Calculate Risk
 probability = min(0.30 + ((age - 30) * 0.012) + (oldpeak * 0.08) + ((resting_bp > 140) * 0.10) + ((cholesterol > 250) * 0.05), 0.95)
 risk_percent = int(probability * 100)
+ring_radius = 70
+ring_circumference = 2 * np.pi * ring_radius
+ring_offset = ring_circumference * (1 - (risk_percent / 100))
 
 if risk_percent >= 70:
     risk_level = "High"
@@ -430,7 +455,12 @@ with right:
     st.markdown(f"""<div class="glass-card">
 <div class="card-title">AI Risk Intelligence</div>
 <div class="card-subtitle">Real-time predictive cardiovascular analytics.</div>
-<div class="progress-ring" style="--progress:{risk_percent};">
+<div class="progress-ring">
+<svg viewBox="0 0 160 160" aria-hidden="true">
+<circle class="ring-bg" cx="80" cy="80" r="{ring_radius}" />
+<circle class="ring-fg" cx="80" cy="80" r="{ring_radius}"
+    style="stroke-dasharray:{ring_circumference:.2f}; stroke-dashoffset:{ring_offset:.2f};" />
+</svg>
 <div class="progress-inner">
 <div class="progress-value">{risk_percent}%</div>
 <div class="progress-label">Risk Score</div>
